@@ -1,0 +1,24 @@
+.array {
+  display: flex;
+  /* position: absolute; */
+  /* left: 100px; */
+  /* bottom: 10vh; */
+  /* width: 70%; */
+  justify-content: space-evenly;
+  /* background-color: lightgray; */
+  box-shadow: 0px 10px 53px 0px rgba(0, 0, 0, 0.3) !important;
+  border-radius: 4px;
+  padding: 20px;
+  align-items: baseline;
+}
+
+.array__bar {
+  width: 4px;
+  background-color: rgb(57, 200, 195);
+  /* display: inline-block; */
+  margin: 0 0.2px;
+}
+
+.array__reset {
+  box-shadow: 0px 10px 53px 0px rgba(0, 0, 0, 0.3) !important;
+}
