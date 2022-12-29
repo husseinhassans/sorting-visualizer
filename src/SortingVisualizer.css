@@ -23,7 +23,23 @@
   margin: 0 0.2px;
 }
 
-.frontPage__Buttons {
+.frontPage__SortingButtons {
+  position: relative;
+  bottom: 0vh;
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.frontPage__ArrayButtons .MuiIconButton-root {
+  /* background-color: white; */
+  color: rgb(255, 87, 87);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
+}
+
+.frontPage__ArrayButtons {
   position: relative;
   bottom: 0vh;
   display: flex;
@@ -32,13 +48,7 @@
   width: 100%;
 }
 
-.frontPage__Buttons .MuiIconButton-root {
-  /* background-color: white; */
-  color: rgb(255, 87, 87);
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
-}
-
-.frontPage__Buttons .MuiButton-root {
+.frontPage__SortingButtons .MuiButton-root {
   /* background-color: white; */
   color: rgb(109, 166, 246);
   /* size: small; */

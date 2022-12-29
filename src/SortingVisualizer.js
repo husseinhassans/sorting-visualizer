@@ -7,30 +7,39 @@ import * as sortingAlgorithms from "./SortingAlgorithms";
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
-  const [update, setUpdate] = useState(false);
+  const [prevArray, setPrevArray] = useState([]);
+  const minArrayVal = 5;
+  const maxArrayVal = 800;
 
   const randomIntFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  //   componentDidMount equivalent
+  // here we set the previous array to the current, and then build a new one
+  const resetArray = () => {
+    setPrevArray(array);
+    let newArray = [];
+    for (let i = 0; i < 300; i++) {
+      newArray.push(randomIntFromInterval(minArrayVal, maxArrayVal));
+    }
+    setArray(newArray);
+  };
+
+  //   equivalent to component did mount. Here we reset the array
   useEffect(() => {
-    const resetArray = () => {
-      let array = [];
-      for (let i = 0; i < 300; i++) {
-        array.push(randomIntFromInterval(5, 800));
-      }
-      setArray(array);
-    };
-    resetArray();
-  }, [update]);
+    let array = [];
+    for (let i = 0; i < 300; i++) {
+      array.push(randomIntFromInterval(minArrayVal, maxArrayVal));
+    }
+    setArray(array);
+  }, []);
 
   const MergeSort = () => {
     setArray(sortingAlgorithms.mergeSort(array));
   };
   const SelectionSort = () => {
     setArray(sortingAlgorithms.selectionSort(array));
-    console.log(array);
+    // console.log(array);
   };
   const QuickSort = () => {
     setArray(sortingAlgorithms.quickSort(array));
@@ -46,16 +55,7 @@ function SortingVisualizer() {
   };
   return (
     <div className="frontPage">
-      <div className="frontPage__array">
-        {array.map((value, idx) => (
-          <div
-            className="array__bar"
-            key={idx}
-            style={{ height: `${value}px` }}
-          ></div>
-        ))}
-      </div>
-      <div className="frontPage__Buttons">
+      <div className="frontPage__SortingButtons">
         <Button
           variant="outlined"
           className="Buttons__mergeSort"
@@ -80,12 +80,6 @@ function SortingVisualizer() {
         >
           Quick Sort
         </Button>
-        <IconButton
-          className="Buttons__reset"
-          onClick={() => setUpdate(!update)}
-        >
-          <RestartAltIcon className="header__icon" fontSize="large" />
-        </IconButton>
         <Button
           variant="outlined"
           className="Buttons__heapSort"
@@ -110,6 +104,32 @@ function SortingVisualizer() {
         >
           Insertion Sort
         </Button>
+      </div>
+      <div className="frontPage__array">
+        {array.map((value, idx) => (
+          <div
+            className="array__bar"
+            key={idx}
+            style={{ height: `${value}px` }}
+          ></div>
+        ))}
+      </div>
+      <div className="frontPage__ArrayButtons">
+        <Button
+          variant="outlined"
+          className="ArrayButtons__regenerate"
+          onClick={() => resetArray()}
+          size="small"
+        >
+          Regenerate Array
+        </Button>
+        <IconButton
+          className="Buttons__reset"
+          //   onClick={() => setUpdate(!update)}
+          onClick={() => setArray(prevArray)}
+        >
+          <RestartAltIcon className="header__icon" fontSize="large" />
+        </IconButton>
       </div>
     </div>
   );

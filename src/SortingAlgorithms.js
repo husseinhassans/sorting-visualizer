@@ -46,8 +46,8 @@ function merge(left, right) {
 // the sorted subarray.
 
 export const selectionSort = (array) => {
-  console.log("before:");
-  console.log(array);
+  //   console.log("before:");
+  //   console.log(array);
   let temp = [...array];
   for (let i = 0; i < temp.length; i++) {
     let minIndex = i;
@@ -60,8 +60,8 @@ export const selectionSort = (array) => {
       [temp[i], temp[minIndex]] = [temp[minIndex], temp[i]];
     }
   }
-  console.log("after:");
-  console.log(temp);
+  //   console.log("after:");
+  //   console.log(temp);
   return temp;
 };
 
