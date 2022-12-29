@@ -33,6 +33,14 @@ function doMergeSort(array, animations, startIdx, endIdx) {
   const middle = Math.floor(array.length / 2);
   const left = array.slice(0, middle);
   const right = array.slice(middle);
+
+  if (array.length === 3) {
+    let animation = {};
+    animation.type = "place";
+    animation.oldIdx = startIdx;
+    animation.newIdx = startIdx;
+    animations.push(animation);
+  }
   // console.log("Splitting");
   // console.log("left:");
   // console.log(left);
