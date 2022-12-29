@@ -10,6 +10,7 @@ function SortingVisualizer() {
   const [prevArray, setPrevArray] = useState([]);
   const minArrayVal = 5;
   const maxArrayVal = 800;
+  const arraySize = 10;
 
   const randomIntFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -19,7 +20,7 @@ function SortingVisualizer() {
   const resetArray = () => {
     setPrevArray(array);
     let newArray = [];
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < arraySize; i++) {
       newArray.push(randomIntFromInterval(minArrayVal, maxArrayVal));
     }
     setArray(newArray);
@@ -28,7 +29,7 @@ function SortingVisualizer() {
   //   equivalent to component did mount. Here we reset the array
   useEffect(() => {
     let array = [];
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < arraySize; i++) {
       array.push(randomIntFromInterval(minArrayVal, maxArrayVal));
     }
     setArray(array);
