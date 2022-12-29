@@ -7,31 +7,130 @@
 // Then, the function merges the sorted arrays back together in a
 // way that preserves their sorted order.
 
+// Animations will have 3 peices. Look at, place, and lift.
+// look at means highlight top row
+// place means place peices looking at in correct order in bottom
+// and make them disappear from top array
+// lift means move them to he top array
 export const mergeSort = (array) => {
+  let animations = [];
+  console.log(animations);
+  return doMergeSort(array, animations, 0, array.length - 1);
+};
+
+function doMergeSort(array, animations, startIdx, endIdx) {
+  // console.log("Merge Sorting:");
+  // console.log(array);
+
   if (array.length <= 1) {
     return array;
   }
+  const animation = {};
+  animation.type = "look";
+  animation.look = [startIdx, endIdx];
+  animations.push(animation);
 
   const middle = Math.floor(array.length / 2);
   const left = array.slice(0, middle);
   const right = array.slice(middle);
-  //   console.log(merge(mergeSort(left), mergeSort(right)));
-  return merge(mergeSort(left), mergeSort(right));
-};
+  // console.log("Splitting");
+  // console.log("left:");
+  // console.log(left);
+  // console.log("right:");
+  // console.log(right);
+  // const result = merge(doMergeSort(left), doMergeSort(right));
+  return merge(
+    doMergeSort(left, animations, startIdx, startIdx + middle - 1),
+    doMergeSort(right, animations, startIdx + middle, endIdx),
+    startIdx,
+    middle,
+    endIdx,
+    animations
+  );
+}
 
 // merge sort helper
-function merge(left, right) {
+function merge(left, right, startIdx, middle, endIdx, animations) {
   const result = [];
 
-  while (left.length && right.length) {
-    if (left[0] < right[0]) {
-      result.push(left.shift());
+  // console.log("Merging left & right");
+
+  // while (left.length && right.length) {
+  //   // console.log("left:");
+  //   // console.log(left);
+  //   // console.log("right:");
+  //   // console.log(right);
+  //   if (left[0] < right[0]) {
+  //     result.push(left.shift());
+  //   } else {
+  //     result.push(right.shift());
+  //   }
+  // }
+
+  let i = 0;
+  let j = 0;
+  for (; i < left.length && j < right.length; ) {
+    let animation = {};
+    if (left[i] < right[j]) {
+      result.push(left[i]);
+      animation.type = "place";
+      animation.oldIdx = startIdx + i;
+      animation.newIdx = startIdx + result.length - 1;
+      i++;
     } else {
-      result.push(right.shift());
+      result.push(right[j]);
+      animation.type = "place";
+      animation.oldIdx = startIdx + middle + j;
+      animation.newIdx = startIdx + result.length - 1;
+      j++;
+    }
+    animations.push(animation);
+  }
+
+  if (i < left.length) {
+    for (; i < left.length; i++) {
+      let animation = {};
+      result.push(left[i]);
+      animation.type = "place";
+      animation.oldIdx = startIdx + i;
+      animation.newIdx = startIdx + result.length - 1;
+      animations.push(animation);
+    }
+  } else if (j < right.length) {
+    for (; j < right.length; j++) {
+      let animation = {};
+      result.push(right[j]);
+      animation.type = "place";
+      animation.oldIdx = startIdx + middle + j;
+      animation.newIdx = startIdx + result.length - 1;
+      animations.push(animation);
     }
   }
 
-  return result.concat(left, right);
+  // let out = result.concat(
+  //   left.slice(i, left.length),
+  //   right.slice(j, right.length)
+  // );
+  // let animation = {};
+  // animation.type = "place";
+  // animation.add = out.slice();
+  // animation.arr = getPrevArr(animations);
+  // animations.push(animation);
+
+  // console.log("Merge Result");
+  // console.log(result.concat(left, right));
+
+  return result;
+}
+
+function getPrevArr(animations) {
+  if (animations.length === 0) {
+    return [];
+  } else if (animations[animations.length - 1].type === "place") {
+    return animations[animations.length - 1].arr;
+  } else {
+    return getPrevArr(animations.slice(0, animations.length - 1));
+  }
 }
 
 // Selection Sort

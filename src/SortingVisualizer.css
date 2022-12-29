@@ -14,6 +14,7 @@
   /* background-color: lightgray; */
   max-width: 100vw;
   align-items: baseline;
+  margin-bottom: 30px;
 }
 
 .array__bar {
@@ -50,8 +51,13 @@
 
 .frontPage__SortingButtons .MuiButton-root {
   /* background-color: white; */
-  color: rgb(109, 166, 246);
+  color: rgb(57, 200, 195);
   /* size: small; */
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
   margin: 0 5px;
+}
+
+.frontPage__ArrayButtons .MuiButton-root {
+  /* background-color: white; */
+  color: rgb(57, 200, 195);
 }

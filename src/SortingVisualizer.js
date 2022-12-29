@@ -116,6 +116,15 @@ function SortingVisualizer() {
           ></div>
         ))}
       </div>
+      <div className="frontPage__array">
+        {array.map((value, idx) => (
+          <div
+            className="array__bar"
+            key={idx}
+            style={{ height: `${value}px` }}
+          ></div>
+        ))}
+      </div>
       <div className="frontPage__arrayVisual"></div>
       <div className="frontPage__ArrayButtons">
         <Button
