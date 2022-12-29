@@ -32,6 +32,7 @@ function SortingVisualizer() {
       array.push(randomIntFromInterval(minArrayVal, maxArrayVal));
     }
     setArray(array);
+    setPrevArray(array);
   }, []);
 
   const MergeSort = () => {
@@ -114,6 +115,7 @@ function SortingVisualizer() {
           ></div>
         ))}
       </div>
+      <div className="frontPage__arrayVisual"></div>
       <div className="frontPage__ArrayButtons">
         <Button
           variant="outlined"
