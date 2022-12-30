@@ -148,16 +148,6 @@ function merge(left, right, startIdx, middle, endIdx, animations) {
   return result;
 }
 
-function getPrevArr(animations) {
-  if (animations.length === 0) {
-    return [];
-  } else if (animations[animations.length - 1].type === "place") {
-    return animations[animations.length - 1].arr;
-  } else {
-    return getPrevArr(animations.slice(0, animations.length - 1));
-  }
-}
-
 // Selection Sort
 // Selection sort is an algorithm for sorting an array by repeatedly
 // selecting the minimum element (considering ascending order) from
