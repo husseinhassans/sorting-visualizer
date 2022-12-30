@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
+import Slider from "@mui/material/Slider";
 import "./SortingVisualizer.css";
 import * as sortingAlgorithms from "./SortingAlgorithms";
 
@@ -11,6 +12,12 @@ function SortingVisualizer() {
   const minArrayVal = 5;
   const maxArrayVal = 350;
   const arraySize = 300;
+  const [speedFactor, setSpeedFactor] = useState(20);
+
+  const handleInputChange = (event) => {
+    setSpeedFactor(Number(event.target.value));
+    console.log(speedFactor);
+  };
 
   const randomIntFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -27,10 +34,10 @@ function SortingVisualizer() {
   };
 
   const resetArray = () => {
-    setArray(prevArray);
+    // setArray(prevArray);
     const topArrayBars = document.getElementsByClassName("array__bar");
-    for (let i = 0; i < prevArray.length; i++) {
-      topArrayBars[i].style.height = prevArray[i];
+    for (let i = 0; i < topArrayBars.length; i++) {
+      topArrayBars[i].style.height = array[i];
     }
   };
 
@@ -124,9 +131,9 @@ function SortingVisualizer() {
             bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
           }
         }
-      }, i * 25);
+      }, i * speedFactor);
     }
-    // console.log(array);
+    console.log(array);
   };
   const SelectionSort = () => {
     setArray(sortingAlgorithms.selectionSort(array));
@@ -151,7 +158,7 @@ function SortingVisualizer() {
           variant="outlined"
           className="Buttons__mergeSort"
           onClick={() => MergeSort()}
-          size="small"
+          size="large"
         >
           Merge Sort
         </Button>
@@ -159,7 +166,7 @@ function SortingVisualizer() {
           variant="outlined"
           className="Buttons__selectionSort"
           onClick={() => SelectionSort()}
-          size="small"
+          size="large"
         >
           Selection Sort
         </Button>
@@ -167,7 +174,7 @@ function SortingVisualizer() {
           variant="outlined"
           className="Buttons__quickSort"
           onClick={() => QuickSort()}
-          size="small"
+          size="large"
         >
           Quick Sort
         </Button>
@@ -175,7 +182,7 @@ function SortingVisualizer() {
           variant="outlined"
           className="Buttons__heapSort"
           onClick={() => HeapSort()}
-          size="small"
+          size="large"
         >
           Heap Sort
         </Button>
@@ -183,7 +190,7 @@ function SortingVisualizer() {
           variant="outlined"
           className="Buttons__bubblesort"
           onClick={() => BubbleSort()}
-          size="small"
+          size="large"
         >
           Bubble Sort
         </Button>
@@ -191,7 +198,7 @@ function SortingVisualizer() {
           variant="outlined"
           className="Buttons__insertionsort"
           onClick={() => InsertionSort()}
-          size="small"
+          size="large"
         >
           Insertion Sort
         </Button>
@@ -219,10 +226,22 @@ function SortingVisualizer() {
           variant="outlined"
           className="ArrayButtons__regenerate"
           onClick={() => regenerateArray()}
-          size="small"
+          size="large"
         >
           Regenerate Array
         </Button>
+        <Slider
+          className="ArrayButtons__Slider"
+          aria-label="Temperature"
+          defaultValue={30}
+          //   getAriaValueText={"hi"}
+          valueLabelDisplay="auto"
+          step={20}
+          color="secondary"
+          onChange={handleInputChange}
+          min={1}
+          max={1000}
+        />
         <IconButton
           className="Buttons__reset"
           //   onClick={() => setUpdate(!update)}
