@@ -10,7 +10,7 @@ function SortingVisualizer() {
   const [prevArray, setPrevArray] = useState([]);
   const minArrayVal = 5;
   const maxArrayVal = 800;
-  const arraySize = 8;
+  const arraySize = 300;
 
   const randomIntFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -115,7 +115,7 @@ function SortingVisualizer() {
             bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
           }
         }
-      }, i * 1000);
+      }, i * 10);
     }
     // console.log(array);
   };
