@@ -37,7 +37,76 @@ function SortingVisualizer() {
   }, []);
 
   const MergeSort = () => {
-    setArray(sortingAlgorithms.mergeSort(array));
+    // const topArrayBars = document.getElementsByClassName("array__bar");
+    // topArrayBars[5].style.backgroundColor = "rgb(255, 79, 120)";
+    // topArrayBars[0].style.backgroundColor = "rgb(255, 79, 120)";
+
+    // console.log(topArrayBars.length);
+    let animations = sortingAlgorithms.mergeSort(array);
+    console.log(animations);
+    // for (let j = animations[0].look[0]; j <= animations[0].look[1]; j++) {
+    //   console.log(j);
+    //   topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
+    // }
+    for (let i = 0; i < animations.length; i++) {
+      setTimeout(() => {
+        const topArrayBars = document.getElementsByClassName("array__bar");
+        const bottomArrayBars =
+          document.getElementsByClassName("array__baraux");
+        if (animations[i].type === "look") {
+          for (let j = 0; j < topArrayBars.length; j++) {
+            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+          }
+          for (let j = animations[i].look[0]; j <= animations[i].look[1]; j++) {
+            topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
+          }
+        } else if (animations[i].type === "join") {
+          for (let j = 0; j < topArrayBars.length; j++) {
+            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+          }
+          //   left color
+          for (
+            let j = animations[i].leftIndices[0];
+            j <= animations[i].leftIndices[1];
+            j++
+          ) {
+            topArrayBars[j].style.backgroundColor = "rgb(255, 77, 252)";
+          }
+          // right color
+          for (
+            let j = animations[i].rightIndices[0];
+            j <= animations[i].rightIndices[1];
+            j++
+          ) {
+            topArrayBars[j].style.backgroundColor = "rgb(255, 237, 77)";
+          }
+        } else if (animations[i].type === "place") {
+          bottomArrayBars[animations[i].newIdx].style.height =
+            topArrayBars[animations[i].oldIdx].style.height;
+          bottomArrayBars[animations[i].newIdx].style.backgroundColor =
+            topArrayBars[animations[i].oldIdx].style.backgroundColor;
+        } else if (animations[i].type === "lift") {
+          let newArr = array.slice();
+          //   console.log(newArr);
+          for (
+            let j = animations[i].range[0];
+            j <= animations[i].range[1];
+            j++
+          ) {
+            newArr[j] = animations[i].newVals[j - animations[i].range[0]];
+          }
+          setArray(newArr);
+          //   fix colors after
+          for (let j = 0; j < topArrayBars.length; j++) {
+            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+          }
+          for (let j = 0; j < bottomArrayBars.length; j++) {
+            bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
+          }
+        }
+      }, i * 1000);
+    }
+    console.log(array);
   };
   const SelectionSort = () => {
     setArray(sortingAlgorithms.selectionSort(array));
@@ -119,13 +188,12 @@ function SortingVisualizer() {
       <div className="frontPage__array">
         {array.map((value, idx) => (
           <div
-            className="array__bar"
+            className="array__baraux"
             key={idx}
             style={{ height: `${value}px` }}
           ></div>
         ))}
       </div>
-      <div className="frontPage__arrayVisual"></div>
       <div className="frontPage__ArrayButtons">
         <Button
           variant="outlined"

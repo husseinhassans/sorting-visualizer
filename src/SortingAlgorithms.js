@@ -14,8 +14,10 @@
 // lift means move them to he top array
 export const mergeSort = (array) => {
   let animations = [];
-  console.log(animations);
-  return doMergeSort(array, animations, 0, array.length - 1);
+  // console.log(animations);
+  // do result = potentially
+  doMergeSort(array, animations, 0, array.length - 1);
+  return animations;
 };
 
 function doMergeSort(array, animations, startIdx, endIdx) {

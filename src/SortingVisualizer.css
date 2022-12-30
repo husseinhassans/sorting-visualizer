@@ -23,6 +23,12 @@
   /* display: inline-block; */
   margin: 0 0.4px;
 }
+.array__baraux {
+  width: 100%;
+  background-color: rgba(57, 200, 195, 0);
+  /* display: inline-block; */
+  margin: 0 0.4px;
+}
 
 .frontPage__SortingButtons {
   position: relative;
