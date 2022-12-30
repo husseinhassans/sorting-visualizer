@@ -9,7 +9,7 @@ function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [prevArray, setPrevArray] = useState([]);
   const minArrayVal = 5;
-  const maxArrayVal = 800;
+  const maxArrayVal = 350;
   const arraySize = 300;
 
   const randomIntFromInterval = (min, max) => {
@@ -17,13 +17,21 @@ function SortingVisualizer() {
   };
 
   // here we set the previous array to the current, and then build a new one
-  const resetArray = () => {
+  const regenerateArray = () => {
     setPrevArray(array);
     let newArray = [];
     for (let i = 0; i < arraySize; i++) {
       newArray.push(randomIntFromInterval(minArrayVal, maxArrayVal));
     }
     setArray(newArray);
+  };
+
+  const resetArray = () => {
+    setArray(prevArray);
+    const topArrayBars = document.getElementsByClassName("array__bar");
+    for (let i = 0; i < prevArray.length; i++) {
+      topArrayBars[i].style.height = prevArray[i];
+    }
   };
 
   //   equivalent to component did mount. Here we reset the array
@@ -43,7 +51,7 @@ function SortingVisualizer() {
 
     // console.log(topArrayBars.length);
     let animations = sortingAlgorithms.mergeSort(array);
-    console.log(animations);
+    // console.log(animations);
     // for (let j = animations[0].look[0]; j <= animations[0].look[1]; j++) {
     //   console.log(j);
     //   topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
@@ -95,14 +103,15 @@ function SortingVisualizer() {
             j <= animations[i].range[1];
             j++
           ) {
-            // newArr[j] = animations[i].newVals[j - animations[i].range[0]];
-            console.log("untouched height:");
-            console.log(topArrayBars[j].style.height);
+            // topArrayBars[j].style.display = "none";
+            // setTimeout(() => {
             topArrayBars[j].style.height =
               animations[i].newVals[j - animations[i].range[0]].toString() +
               "px";
-            console.log("desired height:");
-            console.log(animations[i].newVals[j - animations[i].range[0]]);
+            // }, j * 5);
+            // setTimeout(() => {
+            //   topArrayBars[j].style.display = "inline-block";
+            // }, j * 1000);
           }
           //   console.log("After:");
           //   console.log(newArr);
@@ -115,7 +124,7 @@ function SortingVisualizer() {
             bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
           }
         }
-      }, i * 10);
+      }, i * 25);
     }
     // console.log(array);
   };
@@ -196,7 +205,7 @@ function SortingVisualizer() {
           ></div>
         ))}
       </div>
-      <div className="frontPage__array">
+      <div className="frontPage__arrayaux">
         {array.map((value, idx) => (
           <div
             className="array__baraux"
@@ -209,7 +218,7 @@ function SortingVisualizer() {
         <Button
           variant="outlined"
           className="ArrayButtons__regenerate"
-          onClick={() => resetArray()}
+          onClick={() => regenerateArray()}
           size="small"
         >
           Regenerate Array
@@ -217,7 +226,7 @@ function SortingVisualizer() {
         <IconButton
           className="Buttons__reset"
           //   onClick={() => setUpdate(!update)}
-          onClick={() => setArray(prevArray)}
+          onClick={() => resetArray()}
         >
           <RestartAltIcon className="header__icon" fontSize="large" />
         </IconButton>

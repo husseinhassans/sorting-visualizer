@@ -11,10 +11,28 @@
   /* bottom: 10vh; */
   /* width: 70%; */
   justify-content: space-evenly;
-  /* background-color: lightgray; */
+  background-color: rgb(235, 235, 235);
   max-width: 100vw;
   align-items: baseline;
   margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 20px;
+  /* scale: 1 0.5; */
+}
+.frontPage__arrayaux {
+  display: flex;
+  /* position: absolute; */
+  /* left: 100px; */
+  /* bottom: 10vh; */
+  /* width: 70%; */
+  justify-content: space-evenly;
+  max-width: 100vw;
+  align-items: baseline;
+  margin-bottom: 30px;
+  background-color: lightgray;
+  border-radius: 20px;
+  padding: 20px;
+  /* scale: 1 0.5; */
 }
 
 .array__bar {
