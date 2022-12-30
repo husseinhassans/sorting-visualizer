@@ -95,7 +95,12 @@
   color: rgb(57, 200, 195);
 }
 
-.ArrayButtons__Slider {
+.ArrayButtons__SliderSize {
+  max-width: 30%;
+  /* color: rgb(57, 200, 195); */
+}
+
+.ArrayButtons__SliderSpeed {
   max-width: 30%;
   /* color: rgb(57, 200, 195); */
 }

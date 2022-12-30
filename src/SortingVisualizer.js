@@ -9,14 +9,27 @@ import * as sortingAlgorithms from "./SortingAlgorithms";
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [prevArray, setPrevArray] = useState([]);
+  const [reset, setReset] = useState(true);
   const minArrayVal = 5;
   const maxArrayVal = 350;
   const speedFactor = 5000; // 1000 fast, 5000 mild, 50,000 analytical
+  let speed = 10;
+  //   let tempSpeed = 10;
   const [arraySize, setArraySize] = useState(500);
   //   const [speedFactor, setSpeedFactor] = useState(10);
 
-  const handleInputChange = (event) => {
+  const handleArraySizeChange = (event) => {
     setArraySize(Number(event.target.value));
+  };
+
+  const handleSpeedChange = (event) => {
+    speed = 625 / Number(event.target.value);
+    // console.log(speed);
+  };
+
+  const getSpeed = () => {
+    // console.log(speed);
+    return speed;
   };
 
   const randomIntFromInterval = (min, max) => {
@@ -25,7 +38,7 @@ function SortingVisualizer() {
 
   // here we set the previous array to the current, and then build a new one
   const regenerateArray = () => {
-    setPrevArray(array);
+    setPrevArray(array.slice());
     let newArray = [];
     for (let i = 0; i < arraySize; i++) {
       newArray.push(randomIntFromInterval(minArrayVal, maxArrayVal));
@@ -33,13 +46,13 @@ function SortingVisualizer() {
     setArray(newArray);
   };
 
-  const resetArray = () => {
-    // setArray(prevArray);
-    const topArrayBars = document.getElementsByClassName("array__bar");
-    for (let i = 0; i < topArrayBars.length; i++) {
-      topArrayBars[i].style.height = array[i];
-    }
-  };
+  //   const resetArray = () => {
+  //     // setArray(prevArray);
+  //     const topArrayBars = document.getElementsByClassName("array__bar");
+  //     for (let i = 0; i < topArrayBars.length; i++) {
+  //       topArrayBars[i].style.height = array[i];
+  //     }
+  //   };
 
   //   equivalent to component did mount. Here we reset the array
   useEffect(() => {
@@ -51,10 +64,20 @@ function SortingVisualizer() {
     setPrevArray(array);
   }, [arraySize]);
 
+  //   useEffect(() => {
+  //     setArray(prevArray);
+  //   }, [prevArray, reset]);
+
   const MergeSort = () => {
     let animations = sortingAlgorithms.mergeSort(array);
+    // console.log(animations.length);
     for (let i = 0; i < animations.length; i++) {
+      //   speed++;
+      //   console.log(i);
+
       setTimeout(() => {
+        // console.log(speed);
+        // setSpeed(tempSpeed);
         const topArrayBars = document.getElementsByClassName("array__bar");
         const bottomArrayBars =
           document.getElementsByClassName("array__baraux");
@@ -110,9 +133,9 @@ function SortingVisualizer() {
             bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
           }
         }
-      }, (i * speedFactor) / arraySize);
+      }, i * getSpeed());
     }
-    console.log(array);
+    // console.log(array);
   };
   const SelectionSort = () => {
     let animations = sortingAlgorithms.selectionSort(array);
@@ -250,21 +273,33 @@ function SortingVisualizer() {
           Regenerate Array
         </Button>
         <Slider
-          className="ArrayButtons__Slider"
+          className="ArrayButtons__SliderSize"
           aria-label="Temperature"
           defaultValue={500}
           //   getAriaValueText={"hi"}
           valueLabelDisplay="auto"
           step={5}
           color="secondary"
-          onChange={handleInputChange}
+          onChange={handleArraySizeChange}
           min={8}
           max={1000}
+        />
+        <Slider
+          className="ArrayButtons__SliderSpeed"
+          aria-label="Temperature"
+          defaultValue={625 / 10}
+          //   getAriaValueText={"hi"}
+          valueLabelDisplay="auto"
+          step={5}
+          color="secondary"
+          onChange={handleSpeedChange}
+          min={625 / 625}
+          max={625 / 5}
         />
         <IconButton
           className="Buttons__reset"
           //   onClick={() => setUpdate(!update)}
-          onClick={() => resetArray()}
+          onClick={() => setReset(!reset)}
         >
           <RestartAltIcon className="header__icon" fontSize="large" />
         </IconButton>
