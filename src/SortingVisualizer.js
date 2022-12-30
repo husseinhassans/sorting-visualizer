@@ -86,16 +86,27 @@ function SortingVisualizer() {
           bottomArrayBars[animations[i].newIdx].style.backgroundColor =
             topArrayBars[animations[i].oldIdx].style.backgroundColor;
         } else if (animations[i].type === "lift") {
-          let newArr = array.slice();
+          //   let newArr = array.slice();
+          //   console.log("Before");
+          //   console.log(newArr);
           //   console.log(newArr);
           for (
             let j = animations[i].range[0];
             j <= animations[i].range[1];
             j++
           ) {
-            newArr[j] = animations[i].newVals[j - animations[i].range[0]];
+            // newArr[j] = animations[i].newVals[j - animations[i].range[0]];
+            console.log("untouched height:");
+            console.log(topArrayBars[j].style.height);
+            topArrayBars[j].style.height =
+              animations[i].newVals[j - animations[i].range[0]].toString() +
+              "px";
+            console.log("desired height:");
+            console.log(animations[i].newVals[j - animations[i].range[0]]);
           }
-          setArray(newArr);
+          //   console.log("After:");
+          //   console.log(newArr);
+          //   setArray(newArr);
           //   fix colors after
           for (let j = 0; j < topArrayBars.length; j++) {
             topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
