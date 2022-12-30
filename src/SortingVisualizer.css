@@ -1,7 +1,24 @@
 .frontPage {
   box-shadow: 0px 10px 53px 0px rgba(0, 0, 0, 0.3) !important;
-  border-radius: 4px;
+  border-radius: 20px;
+  /* padding: 20px; */
+}
+
+.frontPage__SortingButtons {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #cecece;
   padding: 20px;
+
+  margin-bottom: 30px;
+  width: 100%;
+}
+.frontPage__SortingButtons .MuiButton-root {
+  color: rgb(57, 200, 195);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
+  /* margin: 4 4px; */
 }
 
 .frontPage__array {
@@ -13,8 +30,11 @@
   justify-content: space-evenly;
   background-color: rgb(249, 249, 249);
   height: 380px;
-  max-width: 100vw;
+  /* max-width: 100vw; */
   align-items: center;
+  /* equivalently margin: top right bottom left; */
+  margin-left: 20px;
+  margin-right: 20px;
   margin-bottom: 30px;
   padding: 20px;
   border-radius: 20px;
@@ -31,6 +51,8 @@
   height: 380px;
   max-width: 100vw;
   align-items: center;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-bottom: 30px;
   background-color: rgb(249, 249, 249);
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
@@ -52,50 +74,28 @@
   margin: 0 0.4px;
 }
 
-.frontPage__SortingButtons {
-  position: relative;
-  bottom: 0vh;
-  display: flex;
-  justify-content: space-between;
-
-  margin-bottom: 30px;
-  width: 100%;
-}
-
-.frontPage__ArrayButtons .MuiIconButton-root {
-  /* background-color: white; */
-  color: rgb(255, 87, 87);
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
-}
-
 .frontPage__ArrayButtons {
   position: relative;
+  padding: 20px;
   bottom: 0vh;
   display: flex;
+  border-top: 1px solid #cecece;
   justify-content: space-between;
   margin-top: 30px;
   width: 100%;
   align-items: center;
 }
+.frontPage__ArrayButtons .MuiIconButton-root {
+  /* background-color: white; */
+  color: rgb(255, 87, 87);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
+}
+.frontPage__ArrayButtons .MuiButton-root {
+  /* background-color: white; */
+  color: rgb(57, 200, 195);
+}
 
 .ArrayButtons__Slider {
   max-width: 30%;
   /* color: rgb(57, 200, 195); */
-}
-.frontPage__ArrayButtons .Slider-root {
-  /* background-color: white; */
-  color: rgb(57, 200, 195);
-}
-
-.frontPage__SortingButtons .MuiButton-root {
-  /* background-color: white; */
-  color: rgb(57, 200, 195);
-  /* size: small; */
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
-  margin: 0 5px;
-}
-
-.frontPage__ArrayButtons .MuiButton-root {
-  /* background-color: white; */
-  color: rgb(57, 200, 195);
 }

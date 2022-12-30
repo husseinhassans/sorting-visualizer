@@ -252,7 +252,7 @@ function SortingVisualizer() {
         <Slider
           className="ArrayButtons__Slider"
           aria-label="Temperature"
-          defaultValue={30}
+          defaultValue={500}
           //   getAriaValueText={"hi"}
           valueLabelDisplay="auto"
           step={5}
