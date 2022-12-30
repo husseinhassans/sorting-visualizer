@@ -11,12 +11,12 @@ function SortingVisualizer() {
   const [prevArray, setPrevArray] = useState([]);
   const minArrayVal = 5;
   const maxArrayVal = 350;
-  const arraySize = 8;
-  const [speedFactor, setSpeedFactor] = useState(1000);
+  const speedFactor = 5000; // 1000 fast, 5000 mild, 50,000 analytical
+  const [arraySize, setArraySize] = useState(500);
+  //   const [speedFactor, setSpeedFactor] = useState(10);
 
   const handleInputChange = (event) => {
-    setSpeedFactor(Number(event.target.value));
-    console.log(speedFactor);
+    setArraySize(Number(event.target.value));
   };
 
   const randomIntFromInterval = (min, max) => {
@@ -49,20 +49,10 @@ function SortingVisualizer() {
     }
     setArray(array);
     setPrevArray(array);
-  }, []);
+  }, [arraySize]);
 
   const MergeSort = () => {
-    // const topArrayBars = document.getElementsByClassName("array__bar");
-    // topArrayBars[5].style.backgroundColor = "rgb(255, 79, 120)";
-    // topArrayBars[0].style.backgroundColor = "rgb(255, 79, 120)";
-
-    // console.log(topArrayBars.length);
     let animations = sortingAlgorithms.mergeSort(array);
-    // console.log(animations);
-    // for (let j = animations[0].look[0]; j <= animations[0].look[1]; j++) {
-    //   console.log(j);
-    //   topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
-    // }
     for (let i = 0; i < animations.length; i++) {
       setTimeout(() => {
         const topArrayBars = document.getElementsByClassName("array__bar");
@@ -101,29 +91,15 @@ function SortingVisualizer() {
           bottomArrayBars[animations[i].newIdx].style.backgroundColor =
             topArrayBars[animations[i].oldIdx].style.backgroundColor;
         } else if (animations[i].type === "lift") {
-          //   let newArr = array.slice();
-          //   console.log("Before");
-          //   console.log(newArr);
-          //   console.log(newArr);
           for (
             let j = animations[i].range[0];
             j <= animations[i].range[1];
             j++
           ) {
-            // topArrayBars[j].style.display = "none";
-            // setTimeout(() => {
             topArrayBars[j].style.height =
               animations[i].newVals[j - animations[i].range[0]].toString() +
               "px";
-            // }, j * 5);
-            // setTimeout(() => {
-            //   topArrayBars[j].style.display = "inline-block";
-            // }, j * 1000);
           }
-          //   console.log("After:");
-          //   console.log(newArr);
-          //   setArray(newArr);
-          //   fix colors after
           for (let j = 0; j < topArrayBars.length; j++) {
             topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
           }
@@ -131,7 +107,7 @@ function SortingVisualizer() {
             bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
           }
         }
-      }, i * speedFactor);
+      }, (i * speedFactor) / arraySize);
     }
     console.log(array);
   };
@@ -175,7 +151,7 @@ function SortingVisualizer() {
             topArrayBars[animations[i].indices[1]].style.height;
           topArrayBars[animations[i].indices[1]].style.height = tempHeight;
         }
-      }, i * speedFactor);
+      }, (i * speedFactor) / arraySize);
     }
     console.log(array);
   };
@@ -276,10 +252,10 @@ function SortingVisualizer() {
           defaultValue={30}
           //   getAriaValueText={"hi"}
           valueLabelDisplay="auto"
-          step={20}
+          step={5}
           color="secondary"
           onChange={handleInputChange}
-          min={1}
+          min={8}
           max={1000}
         />
         <IconButton
