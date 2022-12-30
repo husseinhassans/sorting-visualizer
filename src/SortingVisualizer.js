@@ -106,7 +106,7 @@ function SortingVisualizer() {
         }
       }, i * 1000);
     }
-    console.log(array);
+    // console.log(array);
   };
   const SelectionSort = () => {
     setArray(sortingAlgorithms.selectionSort(array));
