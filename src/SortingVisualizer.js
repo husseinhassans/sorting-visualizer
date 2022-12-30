@@ -90,6 +90,8 @@ function SortingVisualizer() {
             topArrayBars[animations[i].oldIdx].style.height;
           bottomArrayBars[animations[i].newIdx].style.backgroundColor =
             topArrayBars[animations[i].oldIdx].style.backgroundColor;
+          topArrayBars[animations[i].oldIdx].style.backgroundColor =
+            "rgba(57, 200, 195, 0)";
         } else if (animations[i].type === "lift") {
           for (
             let j = animations[i].range[0];
@@ -99,6 +101,7 @@ function SortingVisualizer() {
             topArrayBars[j].style.height =
               animations[i].newVals[j - animations[i].range[0]].toString() +
               "px";
+            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
           }
           for (let j = 0; j < topArrayBars.length; j++) {
             topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
