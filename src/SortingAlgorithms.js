@@ -35,11 +35,17 @@ function doMergeSort(array, animations, startIdx, endIdx) {
   const right = array.slice(middle);
 
   if (array.length === 3) {
-    let animation = {};
-    animation.type = "place";
-    animation.oldIdx = startIdx;
-    animation.newIdx = startIdx;
-    animations.push(animation);
+    let placeAnimation = {};
+    placeAnimation.type = "place";
+    placeAnimation.oldIdx = startIdx;
+    placeAnimation.newIdx = startIdx;
+    animations.push(placeAnimation);
+
+    let liftAnimation = {};
+    liftAnimation.type = "lift";
+    liftAnimation.range = [startIdx, startIdx];
+    liftAnimation.newVals = [array[0]];
+    animations.push(liftAnimation);
   }
   // console.log("Splitting");
   // console.log("left:");
@@ -114,6 +120,12 @@ function merge(left, right, startIdx, middle, endIdx, animations) {
       animations.push(animation);
     }
   }
+
+  let animation = {};
+  animation.type = "lift";
+  animation.range = [startIdx, endIdx];
+  animation.newVals = result;
+  animations.push(animation);
 
   // let out = result.concat(
   //   left.slice(i, left.length),
