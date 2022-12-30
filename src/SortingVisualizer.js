@@ -11,8 +11,8 @@ function SortingVisualizer() {
   const [prevArray, setPrevArray] = useState([]);
   const minArrayVal = 5;
   const maxArrayVal = 350;
-  const arraySize = 300;
-  const [speedFactor, setSpeedFactor] = useState(20);
+  const arraySize = 8;
+  const [speedFactor, setSpeedFactor] = useState(1000);
 
   const handleInputChange = (event) => {
     setSpeedFactor(Number(event.target.value));
@@ -136,8 +136,48 @@ function SortingVisualizer() {
     console.log(array);
   };
   const SelectionSort = () => {
-    setArray(sortingAlgorithms.selectionSort(array));
-    // console.log(array);
+    let animations = sortingAlgorithms.selectionSort(array);
+    console.log(animations);
+    for (let i = 0; i < animations.length; i++) {
+      setTimeout(() => {
+        const topArrayBars = document.getElementsByClassName("array__bar");
+        if (animations[i].type === "left min") {
+          for (let j = 0; j < topArrayBars.length; j++) {
+            console.log(j);
+            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+          }
+          topArrayBars[animations[i].idx].style.backgroundColor =
+            "rgb(255, 237, 77)";
+        } else if (animations[i].type === "look") {
+          if (animations[i - 1].type === "look") {
+            topArrayBars[animations[i - 1].idx].style.backgroundColor =
+              "rgb(57, 200, 195)";
+          }
+          topArrayBars[animations[i].idx].style.backgroundColor =
+            "rgb(255, 79, 120)";
+        } else if (animations[i].type === "newMin") {
+          for (let j = 0; j < topArrayBars.length; j++) {
+            if (topArrayBars[j].style.backgroundColor === "rgb(33, 107, 51)") {
+              topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+            }
+          }
+          topArrayBars[animations[i].idx].style.backgroundColor =
+            "rgb(33, 107, 51)";
+        } else if (animations[i].type === "swap") {
+          let tempBackgroundColor =
+            topArrayBars[animations[i].indices[0]].style.backgroundColor;
+          let tempHeight = topArrayBars[animations[i].indices[0]].style.height;
+          topArrayBars[animations[i].indices[0]].style.backgroundColor =
+            topArrayBars[animations[i].indices[1]].style.backgroundColor;
+          topArrayBars[animations[i].indices[1]].style.backgroundColor =
+            tempBackgroundColor;
+          topArrayBars[animations[i].indices[0]].style.height =
+            topArrayBars[animations[i].indices[1]].style.height;
+          topArrayBars[animations[i].indices[1]].style.height = tempHeight;
+        }
+      }, i * speedFactor);
+    }
+    console.log(array);
   };
   const QuickSort = () => {
     setArray(sortingAlgorithms.quickSort(array));

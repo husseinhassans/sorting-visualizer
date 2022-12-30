@@ -165,20 +165,41 @@ export const selectionSort = (array) => {
   //   console.log("before:");
   //   console.log(array);
   let temp = [...array];
+  let animations = [];
   for (let i = 0; i < temp.length; i++) {
     let minIndex = i;
+    // color in yellow
+    let leftAnimation = {};
+    leftAnimation.type = "left min";
+    leftAnimation.idx = i;
+    animations.push(leftAnimation);
+
     for (let j = i + 1; j < temp.length; j++) {
+      // color in red
+      let lookAnimation = {};
+      lookAnimation.type = "look";
+      lookAnimation.idx = j;
+      animations.push(lookAnimation);
       if (temp[j] < temp[minIndex]) {
+        // color in green
+        let newMinAnimation = {};
+        newMinAnimation.type = "newMin";
+        newMinAnimation.idx = j;
+        animations.push(newMinAnimation);
         minIndex = j;
       }
     }
     if (minIndex !== i) {
       [temp[i], temp[minIndex]] = [temp[minIndex], temp[i]];
+      let swapAnimation = {};
+      swapAnimation.type = "swap";
+      swapAnimation.indices = [i, minIndex];
+      animations.push(swapAnimation);
     }
   }
   //   console.log("after:");
   //   console.log(temp);
-  return temp;
+  return animations;
 };
 
 // Quick Sort
