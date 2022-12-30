@@ -66,6 +66,11 @@ function doMergeSort(array, animations, startIdx, endIdx) {
 // merge sort helper
 function merge(left, right, startIdx, middle, endIdx, animations) {
   const result = [];
+  let lookAnimation = {};
+  lookAnimation.type = "join";
+  lookAnimation.leftIndices = [startIdx, startIdx + middle - 1];
+  lookAnimation.rightIndices = [startIdx + middle, endIdx];
+  animations.push(lookAnimation);
 
   // console.log("Merging left & right");
 
@@ -121,11 +126,11 @@ function merge(left, right, startIdx, middle, endIdx, animations) {
     }
   }
 
-  let animation = {};
-  animation.type = "lift";
-  animation.range = [startIdx, endIdx];
-  animation.newVals = result;
-  animations.push(animation);
+  let liftAnimation = {};
+  liftAnimation.type = "lift";
+  liftAnimation.range = [startIdx, endIdx];
+  liftAnimation.newVals = result;
+  animations.push(liftAnimation);
 
   // let out = result.concat(
   //   left.slice(i, left.length),
