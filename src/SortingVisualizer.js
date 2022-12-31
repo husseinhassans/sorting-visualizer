@@ -9,14 +9,15 @@ import * as sortingAlgorithms from "./SortingAlgorithms";
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [prevArray, setPrevArray] = useState([]);
-  const [reset, setReset] = useState(true);
+  //   const [resetClicked, setResetClicked] = useState(false);
   let timeouts = [];
   const minArrayVal = 5;
   const maxArrayVal = 350;
+  const defaultArrSize = 500;
   const speedFactor = 5000; // 1000 fast, 5000 mild, 50,000 analytical
   let [speed, setSpeed] = useState(10);
   //   let tempSpeed = 10;
-  const [arraySize, setArraySize] = useState(500);
+  const [arraySize, setArraySize] = useState(defaultArrSize);
   //   const [speedFactor, setSpeedFactor] = useState(10);
 
   const handleArraySizeChange = (event) => {
@@ -39,11 +40,13 @@ function SortingVisualizer() {
 
   // here we set the previous array to the current, and then build a new one
   const regenerateArray = () => {
+    // setReset(false);
     // console.log(timeouts.length);
     for (let i = 0; i < timeouts.length; i++) {
       clearTimeout(timeouts[i]);
     }
     timeouts = [];
+
     setPrevArray(array.slice());
     let newArray = [];
     const topArrayBars = document.getElementsByClassName("array__bar");
@@ -55,17 +58,43 @@ function SortingVisualizer() {
       newArray.push(randomIntFromInterval(minArrayVal, maxArrayVal));
     }
     setArray(newArray);
+    // very hacky, should be done through useEffect
+    // const temp = arraySize;
+    // setArraySize(0);
+    // setArraySize(temp);
   };
 
-  //   const resetArray = () => {
-  //     // setArray(prevArray);
-  //     const topArrayBars = document.getElementsByClassName("array__bar");
-  //     for (let i = 0; i < topArrayBars.length; i++) {
-  //       topArrayBars[i].style.height = array[i];
-  //     }
-  //   };
+  const handleReset = () => {
+    for (let i = 0; i < timeouts.length; i++) {
+      clearTimeout(timeouts[i]);
+    }
+    timeouts = [];
+    // reset to proper previous array
+    if (timeouts === []) {
+      //   console.log("hi");
+      setArray(prevArray);
+    }
+    // otherwise reset to unsorted array
+    else {
+      //   console.log(array.slice());
+      setArray(array.slice());
+    }
+  };
 
-  //   equivalent to component did mount. Here we reset the array
+  //   // handle reset click
+  //   useEffect(() => {});
+
+  // handle mount array formation
+  useEffect(() => {
+    let array = [];
+    for (let i = 0; i < defaultArrSize; i++) {
+      array.push(randomIntFromInterval(minArrayVal, maxArrayVal));
+    }
+    setArray(array);
+    setPrevArray(array);
+  }, []);
+
+  // handle array size change
   useEffect(() => {
     let array = [];
     for (let i = 0; i < arraySize; i++) {
@@ -81,15 +110,9 @@ function SortingVisualizer() {
 
   const MergeSort = () => {
     let animations = sortingAlgorithms.mergeSort(array);
-    // console.log(animations.length);
     for (let i = 0; i < animations.length; i++) {
-      //   speed++;
-      //   console.log(i);
-
       timeouts.push(
         setTimeout(() => {
-          // console.log(speed);
-          // setSpeed(tempSpeed);
           const topArrayBars = document.getElementsByClassName("array__bar");
           const bottomArrayBars =
             document.getElementsByClassName("array__baraux");
@@ -132,6 +155,7 @@ function SortingVisualizer() {
             topArrayBars[animations[i].oldIdx].style.backgroundColor =
               "rgba(57, 200, 195, 0)";
           } else if (animations[i].type === "lift") {
+            let newArray = array.slice();
             for (
               let j = animations[i].range[0];
               j <= animations[i].range[1];
@@ -317,7 +341,7 @@ function SortingVisualizer() {
         <IconButton
           className="Buttons__reset"
           //   onClick={() => setUpdate(!update)}
-          onClick={() => setReset(!reset)}
+          onClick={() => handleReset()}
         >
           <RestartAltIcon className="header__icon" fontSize="large" />
         </IconButton>
