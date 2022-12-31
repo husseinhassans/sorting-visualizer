@@ -1,9 +1,12 @@
 import React from "react";
 
 class MyComponent extends React.Component {
-  state = {
-    delay: 1000, // Initial delay of 1 second
-  };
+  constructor() {
+    super();
+    this.state = {
+      delay: 1000, // Initial delay of 1 second
+    };
+  }
 
   async delayLoop() {
     for (let i = 0; i < 500; i++) {
