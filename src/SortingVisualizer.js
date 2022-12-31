@@ -54,10 +54,9 @@ class SortingVisualizer extends React.Component {
     this.setState({ array: newArray });
   }
 
-  async handleReset() {
+  handleReset() {
     // reset to proper previous array
-    let timeouts = this.timeouts;
-    if (timeouts === []) {
+    if (this.timeouts === []) {
       this.setState({ array: this.state.prevArray });
     }
     // otherwise reset to unsorted array
@@ -69,7 +68,20 @@ class SortingVisualizer extends React.Component {
       this.timeouts = [];
 
       this.setState({ array: this.state.prevArray.slice() });
+
+      const topArrayBars = document.getElementsByClassName("array__bar");
+      const bottomArrayBars = document.getElementsByClassName("array__baraux");
+      for (let i = 0; i < this.state.arraySize; i++) {
+        topArrayBars[i].style.backgroundColor = "rgb(57, 200, 195)";
+        bottomArrayBars[i].style.backgroundColor = "rgba(57, 200, 195, 0)";
+        topArrayBars[i].style.height = this.state.array[i].toString() + "px";
+      }
       console.log(this.state.array);
+      let temp = [];
+      for (let i = 0; i < topArrayBars.length; i++) {
+        temp.push(topArrayBars[i].style.height);
+      }
+      console.log(temp);
     }
   }
 
@@ -149,7 +161,7 @@ class SortingVisualizer extends React.Component {
         }
       }
 
-      console.log(i);
+      // console.log(i);
       await new Promise((resolve) =>
         this.timeouts.push(setTimeout(resolve, this.state.delay))
       );
