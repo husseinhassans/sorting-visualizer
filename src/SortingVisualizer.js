@@ -10,10 +10,11 @@ function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [prevArray, setPrevArray] = useState([]);
   const [reset, setReset] = useState(true);
+  let timeouts = [];
   const minArrayVal = 5;
   const maxArrayVal = 350;
   const speedFactor = 5000; // 1000 fast, 5000 mild, 50,000 analytical
-  let speed = 10;
+  let [speed, setSpeed] = useState(10);
   //   let tempSpeed = 10;
   const [arraySize, setArraySize] = useState(500);
   //   const [speedFactor, setSpeedFactor] = useState(10);
@@ -23,14 +24,14 @@ function SortingVisualizer() {
   };
 
   const handleSpeedChange = (event) => {
-    speed = 625 / Number(event.target.value);
+    setSpeed(625 / Number(event.target.value));
     // console.log(speed);
   };
 
-  const getSpeed = () => {
-    // console.log(speed);
-    return speed;
-  };
+  //   const getSpeed = () => {
+  //     // console.log(speed);
+  //     return speed;
+  //   };
 
   const randomIntFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -38,9 +39,19 @@ function SortingVisualizer() {
 
   // here we set the previous array to the current, and then build a new one
   const regenerateArray = () => {
+    // console.log(timeouts.length);
+    for (let i = 0; i < timeouts.length; i++) {
+      clearTimeout(timeouts[i]);
+    }
+    timeouts = [];
     setPrevArray(array.slice());
     let newArray = [];
+    const topArrayBars = document.getElementsByClassName("array__bar");
+    const bottomArrayBars = document.getElementsByClassName("array__baraux");
+
     for (let i = 0; i < arraySize; i++) {
+      topArrayBars[i].style.backgroundColor = "rgb(57, 200, 195)";
+      bottomArrayBars[i].style.backgroundColor = "rgba(57, 200, 195, 0)";
       newArray.push(randomIntFromInterval(minArrayVal, maxArrayVal));
     }
     setArray(newArray);
@@ -75,65 +86,72 @@ function SortingVisualizer() {
       //   speed++;
       //   console.log(i);
 
-      setTimeout(() => {
-        // console.log(speed);
-        // setSpeed(tempSpeed);
-        const topArrayBars = document.getElementsByClassName("array__bar");
-        const bottomArrayBars =
-          document.getElementsByClassName("array__baraux");
-        if (animations[i].type === "look") {
-          for (let j = 0; j < topArrayBars.length; j++) {
-            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+      timeouts.push(
+        setTimeout(() => {
+          // console.log(speed);
+          // setSpeed(tempSpeed);
+          const topArrayBars = document.getElementsByClassName("array__bar");
+          const bottomArrayBars =
+            document.getElementsByClassName("array__baraux");
+          if (animations[i].type === "look") {
+            for (let j = 0; j < topArrayBars.length; j++) {
+              topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+            }
+            for (
+              let j = animations[i].look[0];
+              j <= animations[i].look[1];
+              j++
+            ) {
+              topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
+            }
+          } else if (animations[i].type === "join") {
+            for (let j = 0; j < topArrayBars.length; j++) {
+              topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+            }
+            //   left color
+            for (
+              let j = animations[i].leftIndices[0];
+              j <= animations[i].leftIndices[1];
+              j++
+            ) {
+              topArrayBars[j].style.backgroundColor = "rgb(255, 77, 252)";
+            }
+            // right color
+            for (
+              let j = animations[i].rightIndices[0];
+              j <= animations[i].rightIndices[1];
+              j++
+            ) {
+              topArrayBars[j].style.backgroundColor = "rgb(255, 237, 77)";
+            }
+          } else if (animations[i].type === "place") {
+            bottomArrayBars[animations[i].newIdx].style.height =
+              topArrayBars[animations[i].oldIdx].style.height;
+            bottomArrayBars[animations[i].newIdx].style.backgroundColor =
+              topArrayBars[animations[i].oldIdx].style.backgroundColor;
+            topArrayBars[animations[i].oldIdx].style.backgroundColor =
+              "rgba(57, 200, 195, 0)";
+          } else if (animations[i].type === "lift") {
+            for (
+              let j = animations[i].range[0];
+              j <= animations[i].range[1];
+              j++
+            ) {
+              topArrayBars[j].style.height =
+                animations[i].newVals[j - animations[i].range[0]].toString() +
+                "px";
+              topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+            }
+            for (let j = 0; j < topArrayBars.length; j++) {
+              topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+            }
+            for (let j = 0; j < bottomArrayBars.length; j++) {
+              bottomArrayBars[j].style.backgroundColor =
+                "rgba(57, 200, 195, 0)";
+            }
           }
-          for (let j = animations[i].look[0]; j <= animations[i].look[1]; j++) {
-            topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
-          }
-        } else if (animations[i].type === "join") {
-          for (let j = 0; j < topArrayBars.length; j++) {
-            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
-          }
-          //   left color
-          for (
-            let j = animations[i].leftIndices[0];
-            j <= animations[i].leftIndices[1];
-            j++
-          ) {
-            topArrayBars[j].style.backgroundColor = "rgb(255, 77, 252)";
-          }
-          // right color
-          for (
-            let j = animations[i].rightIndices[0];
-            j <= animations[i].rightIndices[1];
-            j++
-          ) {
-            topArrayBars[j].style.backgroundColor = "rgb(255, 237, 77)";
-          }
-        } else if (animations[i].type === "place") {
-          bottomArrayBars[animations[i].newIdx].style.height =
-            topArrayBars[animations[i].oldIdx].style.height;
-          bottomArrayBars[animations[i].newIdx].style.backgroundColor =
-            topArrayBars[animations[i].oldIdx].style.backgroundColor;
-          topArrayBars[animations[i].oldIdx].style.backgroundColor =
-            "rgba(57, 200, 195, 0)";
-        } else if (animations[i].type === "lift") {
-          for (
-            let j = animations[i].range[0];
-            j <= animations[i].range[1];
-            j++
-          ) {
-            topArrayBars[j].style.height =
-              animations[i].newVals[j - animations[i].range[0]].toString() +
-              "px";
-            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
-          }
-          for (let j = 0; j < topArrayBars.length; j++) {
-            topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
-          }
-          for (let j = 0; j < bottomArrayBars.length; j++) {
-            bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
-          }
-        }
-      }, i * getSpeed());
+        }, i * speed)
+      );
     }
     // console.log(array);
   };
@@ -290,7 +308,7 @@ function SortingVisualizer() {
           defaultValue={625 / 10}
           //   getAriaValueText={"hi"}
           valueLabelDisplay="auto"
-          step={5}
+          step={1}
           color="secondary"
           onChange={handleSpeedChange}
           min={625 / 625}
