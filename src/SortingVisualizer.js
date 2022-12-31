@@ -13,11 +13,11 @@ class SortingVisualizer extends React.Component {
     this.timeouts = [];
     this.maxArrayVal = 350;
     this.defaultArrSize = 500;
-    this.speedFactor = 5000; // 1000 fast, 5000 mild, 50,000 analytical
+    this.defaultDelay = 10;
     this.state = {
       array: [],
       prevArray: [],
-      speed: 10,
+      delay: this.defaultDelay,
       arraySize: this.defaultArrSize,
     };
   }
@@ -25,9 +25,9 @@ class SortingVisualizer extends React.Component {
     this.setState({ arraySize: Number(event.target.value) });
   }
 
-  handleSpeedChange(event) {
-    this.setState({ speed: 625 / event.target.value });
-  }
+  handleSpeedChange = (event) => {
+    this.setState({ delay: event.target.value });
+  };
 
   randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -145,9 +145,10 @@ class SortingVisualizer extends React.Component {
           bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
         }
       }
-      // console.log(i);
+
+      console.log(i);
       await new Promise((resolve) =>
-        this.timeouts.push(setTimeout(resolve, this.state.speed))
+        this.timeouts.push(setTimeout(resolve, this.state.delay))
       );
     }
   }
@@ -192,7 +193,7 @@ class SortingVisualizer extends React.Component {
           topArrayBars[animations[i].indices[1]].style.height;
         topArrayBars[animations[i].indices[1]].style.height = tempHeight;
       }
-      await new Promise((resolve) => setTimeout(resolve, this.state.speed));
+      await new Promise((resolve) => setTimeout(resolve, this.state.delay));
     }
   }
   QuickSort() {
@@ -302,14 +303,14 @@ class SortingVisualizer extends React.Component {
           <Slider
             className="ArrayButtons__SliderSpeed"
             aria-label="Temperature"
-            defaultValue={625 / 10}
+            defaultValue={this.state.delay}
             //   getAriaValueText={"hi"}
             valueLabelDisplay="auto"
             step={1}
             color="secondary"
             onChange={this.handleSpeedChange}
-            min={625 / 625}
-            max={625 / 5}
+            min={0.01}
+            max={1000}
           />
           <IconButton
             className="Buttons__reset"
