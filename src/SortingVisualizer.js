@@ -21,9 +21,9 @@ class SortingVisualizer extends React.Component {
       arraySize: this.defaultArrSize,
     };
   }
-  handleArraySizeChange(event) {
-    this.setState({ arraySize: Number(event.target.value) });
-  }
+  handleArraySizeChange = (event) => {
+    this.setState({ arraySize: event.target.value });
+  };
 
   handleSpeedChange = (event) => {
     this.setState({ delay: event.target.value });
@@ -291,13 +291,13 @@ class SortingVisualizer extends React.Component {
           <Slider
             className="ArrayButtons__SliderSize"
             aria-label="Temperature"
-            defaultValue={this.defaultArrSize}
+            defaultValue={this.state.arraySize}
             //   getAriaValueText={"hi"}
             valueLabelDisplay="auto"
-            step={5}
+            step={1}
             color="secondary"
             onChange={this.handleArraySizeChange}
-            min={8}
+            min={2}
             max={1000}
           />
           <Slider
