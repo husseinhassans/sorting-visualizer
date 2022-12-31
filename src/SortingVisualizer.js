@@ -54,7 +54,7 @@ class SortingVisualizer extends React.Component {
     this.setState({ array: newArray });
   }
 
-  handleReset() {
+  async handleReset() {
     // reset to proper previous array
     let timeouts = this.timeouts;
     if (timeouts === []) {
@@ -62,11 +62,14 @@ class SortingVisualizer extends React.Component {
     }
     // otherwise reset to unsorted array
     else {
-      for (let i = 0; i < timeouts.length; i++) {
-        clearTimeout(timeouts[i]);
+      console.log("hi pussy");
+      for (let i = 0; i < this.timeouts.length; i++) {
+        clearTimeout(this.timeouts[i]);
       }
-      timeouts = [];
-      this.setState({ array: [...this.state.array] });
+      this.timeouts = [];
+
+      this.setState({ array: this.state.prevArray.slice() });
+      console.log(this.state.array);
     }
   }
 
@@ -93,6 +96,7 @@ class SortingVisualizer extends React.Component {
   }
 
   async MergeSort() {
+    this.setState({ prevArray: this.state.array.slice() });
     let animations = sortingAlgorithms.mergeSort(this.state.array);
     for (let i = 0; i < animations.length; i++) {
       const topArrayBars = document.getElementsByClassName("array__bar");
@@ -132,7 +136,6 @@ class SortingVisualizer extends React.Component {
         topArrayBars[animations[i].oldIdx].style.backgroundColor =
           "rgba(57, 200, 195, 0)";
       } else if (animations[i].type === "lift") {
-        let newArray = this.state.array.slice();
         for (let j = animations[i].range[0]; j <= animations[i].range[1]; j++) {
           topArrayBars[j].style.height =
             animations[i].newVals[j - animations[i].range[0]].toString() + "px";
@@ -309,7 +312,7 @@ class SortingVisualizer extends React.Component {
             step={1}
             color="secondary"
             onChange={this.handleSpeedChange}
-            min={0.01}
+            min={4}
             max={1000}
           />
           <IconButton

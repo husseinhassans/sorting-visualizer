@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <SortingVisualizer />
-      <MyComponent />
+      {/* <MyComponent /> */}
     </div>
   );
 }
