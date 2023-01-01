@@ -300,25 +300,43 @@ function doQuickSort(array, animations, startIdx) {
 // for parent node index i, left child index = 2*i+1, right
 // child index = left child index+1
 export const heapSort = (array) => {
+  let animations = [];
+  doheapSort(array, animations);
+  return animations;
+};
+
+function doheapSort(array, animations) {
   // Build max heap
   let temp = [...array];
   for (let i = Math.floor(temp.length / 2 - 1); i >= 0; i--) {
-    heapify(temp, temp.length, i);
+    heapify(temp, temp.length, i, animations);
   }
 
   // Extract elements from the heap one by one
   for (let i = temp.length - 1; i > 0; i--) {
     [temp[0], temp[i]] = [temp[i], temp[0]];
-    heapify(temp, i, 0);
+    let swap = {};
+    swap.type = "swap";
+    swap.indices = [0, i];
+    animations.push(swap);
+    heapify(temp, i, 0, animations);
   }
 
   return temp;
-};
+}
 
-function heapify(array, heapSize, rootIndex) {
+function heapify(array, heapSize, rootIndex, animations) {
   let largest = rootIndex;
   let leftChild = 2 * rootIndex + 1;
   let rightChild = 2 * rootIndex + 2;
+
+  let look = {};
+  look.type = "look";
+  look.largest = largest;
+  look.left = leftChild;
+  look.right = rightChild; // this is not always valid to look at as right child might not exist
+  look.heapSize = heapSize;
+  animations.push(look);
 
   // Check if left child is larger than root
   if (leftChild < heapSize && array[leftChild] > array[largest]) {
@@ -333,7 +351,11 @@ function heapify(array, heapSize, rootIndex) {
   // If largest is not root, swap and continue heapifying
   if (largest !== rootIndex) {
     [array[rootIndex], array[largest]] = [array[largest], array[rootIndex]];
-    heapify(array, heapSize, largest);
+    let swap = {};
+    swap.type = "swap";
+    swap.indices = [rootIndex, largest];
+    animations.push(swap);
+    heapify(array, heapSize, largest, animations);
   }
 }
 
