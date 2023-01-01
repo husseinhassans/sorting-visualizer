@@ -366,21 +366,30 @@ function heapify(array, heapSize, rootIndex, animations) {
 // the array is sorted.
 
 export const bubbleSort = (array) => {
+  let animations = [];
   let n = array.length;
   let temp = [...array];
   for (let i = 0; i < n - 1; i++) {
     let swapped = false;
     for (let j = 0; j < n - i - 1; j++) {
+      let look = {};
+      look.type = "look";
+      look.indices = [j, j + 1];
+      animations.push(look);
       if (temp[j] > temp[j + 1]) {
         [temp[j], temp[j + 1]] = [temp[j + 1], temp[j]];
         swapped = true;
+        let swap = {};
+        swap.type = "swap";
+        swap.indices = [j, j + 1];
+        animations.push(swap);
       }
     }
     if (!swapped) {
       break;
     }
   }
-  return temp;
+  return animations;
 };
 
 // Insertion sort is a simple sorting algorithm that works
