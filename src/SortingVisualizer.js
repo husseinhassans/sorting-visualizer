@@ -60,16 +60,16 @@ class SortingVisualizer extends React.Component {
   //   }
   // };
 
-  handleSizeSliderScale(value) {
-    if (value < 50) {
-      return value * 4;
-    } else {
-      return 200 + (value - 50) * 16;
-    }
-  }
+  // handleSizeSliderScale(value) {
+  //   if (value < 50) {
+  //     return value * 4;
+  //   } else {
+  //     return 200 + (value - 50) * 16;
+  //   }
+  // }
 
   handleSpeedChange = (event) => {
-    this.setState({ delay: event.target.value });
+    this.setState({ delay: 1000 / event.target.value });
   };
 
   handleInputSpeedChange = (event) => {
@@ -77,7 +77,7 @@ class SortingVisualizer extends React.Component {
       delay:
         event.target.value === ""
           ? this.defaultDelay
-          : Number(event.target.value),
+          : Number(1000 / event.target.value),
     });
   };
 
@@ -462,26 +462,26 @@ class SortingVisualizer extends React.Component {
                 <Slider
                   className="ArrayButtons__SliderSpeed"
                   aria-label="Temperature"
-                  value={this.state.delay}
-                  //   getAriaValueText={"hi"}
+                  value={1000 / this.state.delay}
+                  valueLabelFormat={(value) => `${Math.round(value)} Hz`}
                   valueLabelDisplay="auto"
-                  // step={1}
+                  step={1}
                   color="secondary"
                   onChange={this.handleSpeedChange}
-                  min={this.minDelay}
-                  max={this.maxDelay}
+                  min={Math.floor(1000 / this.maxDelay)}
+                  max={Math.floor(1000 / this.minDelay)}
                 />
               </Grid>
               <Grid item>
                 <Input
-                  value={this.state.delay}
+                  value={1000 / this.state.delay}
                   size="small"
                   onChange={this.handleInputSpeedChange}
                   // onBlur={handleBlur}
                   inputProps={{
                     step: 1,
-                    min: this.minDelay,
-                    max: this.maxDelay,
+                    min: 1000 / this.maxDelay,
+                    max: 1000 / this.minDelay,
                     type: "number",
                     "aria-labelledby": "input-slider",
                   }}
