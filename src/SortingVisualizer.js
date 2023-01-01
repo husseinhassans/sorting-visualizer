@@ -469,9 +469,79 @@ class SortingVisualizer extends React.Component {
     this.setState({ array: newArray });
     this.setState({ sorting: false });
   }
-  InsertionSort() {
-    this.setState({ array: sortingAlgorithms.insertionSort(this.state.array) });
+
+  async InsertionSort() {
+    this.setState({ prevArray: this.state.array.slice() });
+    this.setState({ showAuxArray: false, sorting: true });
+    let newArray = this.state.array.slice();
+
+    let animations = sortingAlgorithms.insertionSort(this.state.array);
+    console.log(animations);
+    for (let i = 0; i < animations.length; i++) {
+      const topArrayBars = document.getElementsByClassName("array__bar");
+      if (
+        i > 0 &&
+        animations[i - 1].type === "look" &&
+        animations[i].type === "swap"
+      ) {
+        // topArrayBars[i].style.backgroundColor = "rgb(255,252,87)";
+        // swap bar colors
+        // let tempBackgroundColor =
+        //   topArrayBars[animations[i].indices[0]].style.backgroundColor;
+        topArrayBars[animations[i].indices[0]].style.backgroundColor =
+          topArrayBars[animations[i].indices[1]].style.backgroundColor;
+        topArrayBars[animations[i].indices[1]].style.backgroundColor =
+          "rgb(255,252,87)";
+
+        // swap bar heights
+        let tempHeight = topArrayBars[animations[i].indices[0]].style.height;
+        topArrayBars[animations[i].indices[0]].style.height =
+          topArrayBars[animations[i].indices[1]].style.height;
+        topArrayBars[animations[i].indices[1]].style.height = tempHeight;
+
+        // Change the resultant array
+        let temp = newArray[animations[i].indices[0]];
+        newArray[animations[i].indices[0]] = newArray[animations[i].indices[1]];
+        newArray[animations[i].indices[1]] = temp;
+      } else if (animations[i].type === "look") {
+        for (let i = 0; i < topArrayBars.length; i++) {
+          topArrayBars[i].style.backgroundColor = "rgb(57, 200, 195)";
+        }
+        topArrayBars[animations[i].idx].style.backgroundColor =
+          "rgb(255, 79, 120)";
+      } else if (animations[i].type === "swap") {
+        // swap bar colors
+        let tempBackgroundColor =
+          topArrayBars[animations[i].indices[0]].style.backgroundColor;
+        topArrayBars[animations[i].indices[0]].style.backgroundColor =
+          topArrayBars[animations[i].indices[1]].style.backgroundColor;
+        topArrayBars[animations[i].indices[1]].style.backgroundColor =
+          tempBackgroundColor;
+
+        // swap bar heights
+        let tempHeight = topArrayBars[animations[i].indices[0]].style.height;
+        topArrayBars[animations[i].indices[0]].style.height =
+          topArrayBars[animations[i].indices[1]].style.height;
+        topArrayBars[animations[i].indices[1]].style.height = tempHeight;
+
+        // Change the resultant array
+        let temp = newArray[animations[i].indices[0]];
+        newArray[animations[i].indices[0]] = newArray[animations[i].indices[1]];
+        newArray[animations[i].indices[1]] = temp;
+      }
+      await new Promise((resolve) =>
+        this.timeouts.push(setTimeout(resolve, this.state.delay))
+      );
+    }
+    const topArrayBars = document.getElementsByClassName("array__bar");
+    for (let i = 0; i < topArrayBars.length; i++) {
+      topArrayBars[i].style.backgroundColor = "rgb(57, 200, 195)";
+    }
+
+    this.setState({ array: newArray });
+    this.setState({ sorting: false });
   }
+
   render() {
     return (
       <div className="frontPage">

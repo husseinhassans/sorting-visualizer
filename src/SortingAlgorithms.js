@@ -397,16 +397,23 @@ export const bubbleSort = (array) => {
 // each element into its correct position in a sorted subarray.
 export const insertionSort = (array) => {
   let temp = [...array];
+  let animations = [];
   for (let i = 1; i < temp.length; i++) {
     let current = temp[i];
+    let look = {};
+    look.type = "look";
+    look.idx = i;
+    animations.push(look);
     let j = i - 1;
     while (j >= 0 && temp[j] > current) {
       temp[j + 1] = temp[j];
+      let swap = {};
+      swap.type = "swap";
+      swap.indices = [j, j + 1];
+      animations.push(swap);
       j--;
     }
     temp[j + 1] = current;
   }
-  return temp;
+  return animations;
 };
-
-// export default SortingAlgorithms;
