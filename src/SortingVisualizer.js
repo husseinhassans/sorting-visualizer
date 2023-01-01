@@ -391,14 +391,14 @@ class SortingVisualizer extends React.Component {
         {this.state.showAuxArray ? this.renderAuxArray() : null}
         <div className="frontPage__ArrayButtons">
           <Button
-            variant="outlined"
+            // variant="outlined"
             className="ArrayButtons__regenerate"
             onClick={() => this.regenerateArray()}
             size="large"
           >
             Regenerate Array
           </Button>
-          <Box sx={{ width: 400 }}>
+          <Box sx={{ width: 400 }} className="ArrayButtons__SizeSlider">
             <Typography
               id="input-slider"
               color="rgb(57, 200, 195)"
@@ -445,7 +445,7 @@ class SortingVisualizer extends React.Component {
               </Grid>
             </Grid>
           </Box>
-          <Box sx={{ width: 400 }}>
+          <Box sx={{ width: 400 }} className="ArrayButtons__SpeedSlider">
             <Typography
               id="input-slider"
               color="rgb(57, 200, 195)"
