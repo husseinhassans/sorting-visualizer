@@ -211,26 +211,75 @@ export const selectionSort = (array) => {
 // which point they are considered sorted.
 
 export const quickSort = (array) => {
+  let animations = [];
+  doQuickSort(array, animations, 0, array.length - 1);
+  return animations;
+};
+
+function doQuickSort(array, animations, startIdx) {
   //   base case
   if (array.length <= 1) {
     return array;
   }
+
+  let look = {};
+  look.type = "look";
+  look.look = [startIdx, startIdx + array.length - 1];
+  animations.push(look);
 
   //   pick pivot to be last element
   const pivot = array[array.length - 1];
   const left = [];
   const right = [];
 
+  let tempAnimations = [];
+
   for (let i = 0; i < array.length - 1; i++) {
+    let animation = {};
     if (array[i] < pivot) {
+      animation.type = "place left";
+      animation.oldIdx = startIdx + i;
+      animation.newIdx = startIdx + left.length;
       left.push(array[i]);
     } else {
+      // note these have to be adjusted to start after final pivot index
+      animation.type = "place right";
+      animation.oldIdx = startIdx + i;
+      animation.newIdx = right.length;
       right.push(array[i]);
     }
+    tempAnimations.push(animation);
   }
 
-  return [...quickSort(left), pivot, ...quickSort(right)];
-};
+  // place pivot first
+  let animation = {};
+  animation.type = "place pivot";
+  animation.oldIdx = startIdx + array.length - 1;
+  animation.newIdx = startIdx + left.length;
+  animations.push(animation);
+
+  // adjust the right indices after finding pivot location
+  // after that push all the place animations to the array
+  for (let i = 0; i < tempAnimations.length; i++) {
+    if (tempAnimations[i].type === "place right") {
+      tempAnimations[i].newIdx =
+        startIdx + left.length + 1 + tempAnimations[i].newIdx;
+    }
+    animations.push(tempAnimations[i]);
+  }
+
+  // Now do a lift operation
+  let lift = {};
+  lift.type = "lift";
+  lift.newVals = [...left, pivot, ...right];
+  lift.range = [startIdx, startIdx + array.length - 1];
+  animations.push(lift);
+
+  let l = doQuickSort(left, animations, startIdx);
+  let r = doQuickSort(right, animations, startIdx + left.length + 1);
+
+  return [...l, pivot, ...r];
+}
 
 // Heap sort
 // Heapsort is a comparison-based sorting algorithm that sorts

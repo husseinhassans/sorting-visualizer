@@ -52,22 +52,6 @@ class SortingVisualizer extends React.Component {
     });
   };
 
-  // handleBlur = () => {
-  //   if (value < this.minArrSize) {
-  //     this.setState({ arraySize: this.minArrSize });
-  //   } else if (value > this.maxArraySize) {
-  //     this.setState({ arraySize: this.maxArrSize });
-  //   }
-  // };
-
-  // handleSizeSliderScale(value) {
-  //   if (value < 50) {
-  //     return value * 4;
-  //   } else {
-  //     return 200 + (value - 50) * 16;
-  //   }
-  // }
-
   handleSpeedChange = (event) => {
     this.setState({ delay: 1000 / event.target.value });
   };
@@ -184,6 +168,7 @@ class SortingVisualizer extends React.Component {
     this.setState({ showAuxArray: true, sorting: true });
     this.setState({ prevArray: this.state.array.slice() });
     let animations = sortingAlgorithms.mergeSort(this.state.array);
+    console.log(animations);
     let newArray = this.state.array.slice();
     for (let i = 0; i < animations.length; i++) {
       const topArrayBars = document.getElementsByClassName("array__bar");
@@ -301,12 +286,78 @@ class SortingVisualizer extends React.Component {
         this.timeouts.push(setTimeout(resolve, this.state.delay))
       );
     }
+    const topArrayBars = document.getElementsByClassName("array__bar");
+    topArrayBars[this.state.arraySize - 1].style.backgroundColor =
+      "rgb(57, 200, 195)";
     this.setState({ array: newArray });
     this.setState({ sorting: false });
   }
 
-  QuickSort() {
-    this.setState({ array: sortingAlgorithms.quickSort(this.state.array) });
+  async QuickSort() {
+    console.log(sortingAlgorithms.quickSort(this.state.array));
+    this.setState({ showAuxArray: true, sorting: true });
+    this.setState({ prevArray: this.state.array.slice() });
+    let animations = sortingAlgorithms.quickSort(this.state.array);
+    let newArray = this.state.array.slice();
+    for (let i = 0; i < animations.length; i++) {
+      const topArrayBars = document.getElementsByClassName("array__bar");
+      const bottomArrayBars = document.getElementsByClassName("array__baraux");
+      console.log(i);
+      if (animations[i].type === "look") {
+        console.log("a");
+        for (let j = 0; j < topArrayBars.length; j++) {
+          topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+        }
+        console.log("b");
+        for (let j = animations[i].look[0]; j <= animations[i].look[1]; j++) {
+          topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
+        }
+        console.log("c");
+      } else if (animations[i].type === "place pivot") {
+        // console.log("pivot");
+        bottomArrayBars[animations[i].newIdx].style.height =
+          topArrayBars[animations[i].oldIdx].style.height;
+        bottomArrayBars[animations[i].newIdx].style.backgroundColor =
+          "rgb(33, 107, 51)";
+        topArrayBars[animations[i].oldIdx].style.backgroundColor =
+          "rgba(57, 200, 195, 0)";
+        // console.log("pivot 2");
+      } else if (animations[i].type === "place left") {
+        bottomArrayBars[animations[i].newIdx].style.height =
+          topArrayBars[animations[i].oldIdx].style.height;
+        bottomArrayBars[animations[i].newIdx].style.backgroundColor =
+          "rgb(255, 237, 77)";
+        topArrayBars[animations[i].oldIdx].style.backgroundColor =
+          "rgba(57, 200, 195, 0)";
+      } else if (animations[i].type === "place right") {
+        bottomArrayBars[animations[i].newIdx].style.height =
+          topArrayBars[animations[i].oldIdx].style.height;
+        bottomArrayBars[animations[i].newIdx].style.backgroundColor =
+          "rgb(255, 77, 252)";
+        topArrayBars[animations[i].oldIdx].style.backgroundColor =
+          "rgba(57, 200, 195, 0)";
+      } else if (animations[i].type === "lift") {
+        for (let j = animations[i].range[0]; j <= animations[i].range[1]; j++) {
+          topArrayBars[j].style.height =
+            animations[i].newVals[j - animations[i].range[0]].toString() + "px";
+          topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+          newArray[j] = animations[i].newVals[j - animations[i].range[0]];
+        }
+        for (let j = 0; j < topArrayBars.length; j++) {
+          topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
+        }
+        for (let j = 0; j < bottomArrayBars.length; j++) {
+          bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
+        }
+      }
+      console.log(i);
+
+      await new Promise((resolve) =>
+        this.timeouts.push(setTimeout(resolve, this.state.delay))
+      );
+    }
+    this.setState({ array: newArray });
+    this.setState({ showAuxArray: false, sorting: false });
   }
   HeapSort() {
     this.setState({ array: sortingAlgorithms.heapSort(this.state.array) });
