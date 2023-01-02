@@ -168,7 +168,6 @@ class SortingVisualizer extends React.Component {
     this.setState({ showAuxArray: true, sorting: true });
     this.setState({ prevArray: this.state.array.slice() });
     let animations = sortingAlgorithms.mergeSort(this.state.array);
-    console.log(animations);
     let newArray = this.state.array.slice();
     for (let i = 0; i < animations.length; i++) {
       const topArrayBars = document.getElementsByClassName("array__bar");
@@ -221,8 +220,6 @@ class SortingVisualizer extends React.Component {
           bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
         }
       }
-
-      // console.log(i);
       await new Promise((resolve) =>
         this.timeouts.push(setTimeout(resolve, this.state.delay))
       );
@@ -238,11 +235,9 @@ class SortingVisualizer extends React.Component {
 
     let animations = sortingAlgorithms.selectionSort(this.state.array);
     for (let i = 0; i < animations.length; i++) {
-      //   setTimeout(() => {
       const topArrayBars = document.getElementsByClassName("array__bar");
       if (animations[i].type === "left min") {
         for (let j = 0; j < topArrayBars.length; j++) {
-          console.log(j);
           topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
         }
         topArrayBars[animations[i].idx].style.backgroundColor =
@@ -294,7 +289,6 @@ class SortingVisualizer extends React.Component {
   }
 
   async QuickSort() {
-    console.log(sortingAlgorithms.quickSort(this.state.array));
     this.setState({ showAuxArray: true, sorting: true });
     this.setState({ prevArray: this.state.array.slice() });
     let animations = sortingAlgorithms.quickSort(this.state.array);
@@ -302,26 +296,20 @@ class SortingVisualizer extends React.Component {
     for (let i = 0; i < animations.length; i++) {
       const topArrayBars = document.getElementsByClassName("array__bar");
       const bottomArrayBars = document.getElementsByClassName("array__baraux");
-      console.log(i);
       if (animations[i].type === "look") {
-        console.log("a");
         for (let j = 0; j < topArrayBars.length; j++) {
           topArrayBars[j].style.backgroundColor = "rgb(57, 200, 195)";
         }
-        console.log("b");
         for (let j = animations[i].look[0]; j <= animations[i].look[1]; j++) {
           topArrayBars[j].style.backgroundColor = "rgb(255, 79, 120)";
         }
-        console.log("c");
       } else if (animations[i].type === "place pivot") {
-        // console.log("pivot");
         bottomArrayBars[animations[i].newIdx].style.height =
           topArrayBars[animations[i].oldIdx].style.height;
         bottomArrayBars[animations[i].newIdx].style.backgroundColor =
           "rgb(33, 107, 51)";
         topArrayBars[animations[i].oldIdx].style.backgroundColor =
           "rgba(57, 200, 195, 0)";
-        // console.log("pivot 2");
       } else if (animations[i].type === "place left") {
         bottomArrayBars[animations[i].newIdx].style.height =
           topArrayBars[animations[i].oldIdx].style.height;
@@ -350,7 +338,6 @@ class SortingVisualizer extends React.Component {
           bottomArrayBars[j].style.backgroundColor = "rgba(57, 200, 195, 0)";
         }
       }
-      console.log(i);
 
       await new Promise((resolve) =>
         this.timeouts.push(setTimeout(resolve, this.state.delay))
@@ -366,9 +353,8 @@ class SortingVisualizer extends React.Component {
     let newArray = this.state.array.slice();
 
     let animations = sortingAlgorithms.heapSort(this.state.array);
-    console.log(animations);
+
     for (let i = 0; i < animations.length; i++) {
-      //   setTimeout(() => {
       const topArrayBars = document.getElementsByClassName("array__bar");
       if (animations[i].type === "look") {
         for (let i = 0; i < topArrayBars.length; i++) {
@@ -424,9 +410,8 @@ class SortingVisualizer extends React.Component {
     let newArray = this.state.array.slice();
 
     let animations = sortingAlgorithms.bubbleSort(this.state.array);
-    console.log(animations);
+
     for (let i = 0; i < animations.length; i++) {
-      //   setTimeout(() => {
       const topArrayBars = document.getElementsByClassName("array__bar");
       if (animations[i].type === "look") {
         for (let i = 0; i < topArrayBars.length; i++) {
@@ -476,7 +461,7 @@ class SortingVisualizer extends React.Component {
     let newArray = this.state.array.slice();
 
     let animations = sortingAlgorithms.insertionSort(this.state.array);
-    console.log(animations);
+
     for (let i = 0; i < animations.length; i++) {
       const topArrayBars = document.getElementsByClassName("array__bar");
       if (
@@ -484,10 +469,6 @@ class SortingVisualizer extends React.Component {
         animations[i - 1].type === "look" &&
         animations[i].type === "swap"
       ) {
-        // topArrayBars[i].style.backgroundColor = "rgb(255,252,87)";
-        // swap bar colors
-        // let tempBackgroundColor =
-        //   topArrayBars[animations[i].indices[0]].style.backgroundColor;
         topArrayBars[animations[i].indices[0]].style.backgroundColor =
           topArrayBars[animations[i].indices[1]].style.backgroundColor;
         topArrayBars[animations[i].indices[1]].style.backgroundColor =
@@ -545,6 +526,9 @@ class SortingVisualizer extends React.Component {
   render() {
     return (
       <div className="frontPage">
+        {/* <h1 className="frontPage__title" style={{ fontFamily: `Roboto` }}>
+          Sorting Visualizer
+        </h1> */}
         <div className="frontPage__SortingButtons">
           <Button
             variant="outlined"
@@ -616,7 +600,6 @@ class SortingVisualizer extends React.Component {
         {this.state.showAuxArray ? this.renderAuxArray() : null}
         <div className="frontPage__ArrayButtons">
           <Button
-            // variant="outlined"
             className="ArrayButtons__regenerate"
             onClick={() => this.regenerateArray()}
             size="large"
@@ -627,7 +610,6 @@ class SortingVisualizer extends React.Component {
             <Typography
               id="input-slider"
               color="rgb(57, 200, 195)"
-              // fontWeight="350"
               gutterBottom
             >
               Size
@@ -642,7 +624,6 @@ class SortingVisualizer extends React.Component {
                   disabled={this.state.sorting}
                   aria-label="Temperature"
                   value={this.state.arraySize}
-                  // getAriaValueText={this.handleSizeSliderScale}
                   valueLabelDisplay="auto"
                   step={1}
                   color="secondary"
@@ -657,7 +638,6 @@ class SortingVisualizer extends React.Component {
                   disabled={this.state.sorting}
                   size="small"
                   onChange={this.handleInputSizeChange}
-                  // onBlur={handleBlur}
                   inputProps={{
                     step: 1,
                     min: this.minArrSize,
@@ -674,7 +654,6 @@ class SortingVisualizer extends React.Component {
             <Typography
               id="input-slider"
               color="rgb(57, 200, 195)"
-              // fontWeight="350"
               gutterBottom
             >
               Speed
@@ -702,7 +681,6 @@ class SortingVisualizer extends React.Component {
                   value={1000 / this.state.delay}
                   size="small"
                   onChange={this.handleInputSpeedChange}
-                  // onBlur={handleBlur}
                   inputProps={{
                     step: 1,
                     min: 1000 / this.maxDelay,
